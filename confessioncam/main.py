@@ -302,6 +302,20 @@ class ConfessionCam:
         self.root.after(1000 // PREVIEW_FPS, self._schedule_draw)
 
     # -----------------------------------------------------------------------
+    # Fan control
+    # -----------------------------------------------------------------------
+
+    def _fan_full(self) -> None:
+        """Drive FAN_PWM low → full speed."""
+        subprocess.run(["pinctrl", "FAN_PWM", "op", "dl"],
+                       check=False, capture_output=True)
+
+    def _fan_auto(self) -> None:
+        """Restore FAN_PWM to a0 (PWM1_CHAN3) for thermal-daemon control."""
+        subprocess.run(["pinctrl", "FAN_PWM", "a0"],
+                       check=False, capture_output=True)
+
+    # -----------------------------------------------------------------------
     # Lifecycle
     # -----------------------------------------------------------------------
 
@@ -319,9 +333,11 @@ class ConfessionCam:
             self.camera.close()
         except Exception:
             pass
+        self._fan_auto()
         self.root.destroy()
 
     def run(self) -> None:
+        self._fan_full()
         self.start_idle()
         self.root.mainloop()
 
