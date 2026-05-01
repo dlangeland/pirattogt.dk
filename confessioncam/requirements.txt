@@ -1,0 +1,19 @@
+# All dependencies are installed by install.sh — run that instead of pip.
+#
+# apt packages:
+#   python3-picamera2     — Camera Module 3 / libcamera support
+#   python3-gpiozero      — GPIO button handling
+#   python3-numpy         — YUV420 → RGB frame conversion
+#   python3-pil           — Pillow base library
+#   python3-pil.imagetk   — Pillow ImageTk extension (tkinter image display)
+#   python3-tk            — tkinter (fullscreen window / camera preview canvas)
+#   mpv                   — idle-state video playback (embedded via --wid)
+#   ffmpeg                — H264→MP4 muxing used by picamera2 FfmpegOutput
+#
+# pip (run after apt):
+#   Pillow (upgrade)      — apt Pillow may lack ImageTk; pip version is self-contained
+#
+# Python stdlib used: json, os, queue, socket, subprocess, threading, datetime
+#
+# The libcamera Python bindings (libcamera.Transform) are bundled with
+# python3-picamera2 and do not need to be installed separately.

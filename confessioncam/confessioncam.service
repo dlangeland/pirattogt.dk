@@ -1,0 +1,25 @@
+[Unit]
+Description=ConfessionCam kiosk
+# graphical-session.target is never activated by the Pi OS labwc session,
+# so we target default.target (always active) and wait for XWayland instead.
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/confessioncam
+
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+Environment=GDK_BACKEND=x11
+
+# Block until XWayland is ready (socket appears after auto-login + labwc start).
+# Polls every second; 120-second ceiling covers slow first-boot scenarios.
+ExecStartPre=/bin/sh -c 'for i in $(seq 120); do [ -S /tmp/.X11-unix/X0 ] && exit 0; sleep 1; done; exit 1'
+TimeoutStartSec=130
+
+ExecStart=/usr/bin/python3 %h/confessioncam/main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

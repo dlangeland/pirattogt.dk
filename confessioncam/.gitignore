@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Video recordings (generated at runtime)
+recordings/*.mp4
+
+# Default video (user-supplied, not tracked)
+media/default_video.mp4
+
+# Editor / OS
+.DS_Store
+*.swp
